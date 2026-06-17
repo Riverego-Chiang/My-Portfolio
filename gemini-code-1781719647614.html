@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Brand Strategy, CIS & Communications</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --muted-color: #86868b;
+            --accent-color: #0029ff; /* 克莱因蓝 */
+            --border-color: #eeeeee;
+            --easing: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            padding: 6rem 3rem; 
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* 语言控制核心样式 */
+        [lang="zh"] { display: none; } /* 默认隐藏中文 */
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12rem;
+        }
+        .logo { font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+        .nav-right { display: flex; align-items: center; }
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-left: 2.5rem;
+            transition: color 0.4s var(--easing);
+        }
+        .nav-links a:hover { color: var(--muted-color); }
+
+        /* 语言切换按钮样式 */
+        .lang-switch {
+            margin-left: 3rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: var(--muted-color);
+            transition: color 0.3s ease;
+        }
+        .lang-switch:hover { color: var(--text-color); }
+
+        /* Hero Header */
+        header { margin-bottom: 15rem; }
+        header h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 3rem;
+        }
+        header h1 span {
+            display: inline-block;
+            animation: fadeInUp 1.2s var(--easing) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        header h1 span:nth-child(1) { animation-delay: 0.1s; }
+        header h1 span:nth-child(3) { animation-delay: 0.3s; }
+        header h1 span:nth-child(5) { animation-delay: 0.5s; }
+        header p {
+            font-size: 1.35rem;
+            max-width: 700px;
+            color: var(--muted-color);
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeIn 1.5s var(--easing) forwards;
+            animation-delay: 0.8s;
+        }
+
+        /* Section Universal Style */
+        section { margin-bottom: 16rem; }
+        section h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--muted-color);
+            margin-bottom: 6rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        /* Module 1 & 2: Project Layout */
+        .project-list { display: flex; flex-direction: column; gap: 10rem; }
+        .project-item { cursor: pointer; }
+        .project-image-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #f5f5f7;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        .project-image-wrapper img, .project-image-wrapper video {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s var(--easing);
+        }
+        .project-item:hover .project-image-wrapper img, .project-item:hover .project-image-wrapper video { transform: scale(1.02); }
+        .project-item:hover h3 { color: var(--accent-color); }
+        .project-meta { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted-color); margin-bottom: 0.75rem; }
+        .project-item h3 { font-size: 2.2rem; font-weight: 600; margin-bottom: 1.5rem; letter-spacing: -0.5px; transition: color 0.4s var(--easing); }
+        .project-desc { font-size: 1.1rem; color: var(--text-color); max-width: 800px; font-weight: 300; text-align: justify; }
+
+        /* Module 3: Creative Diary Visual Grid */
+        .diary-filter { display: flex; gap: 2rem; margin-bottom: 4rem; list-style: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted-color); }
+        .diary-filter li.active { color: var(--text-color); font-weight: 600; }
+        
+        .diary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 250px;
+            gap: 2.5rem;
+        }
+        .diary-item { position: relative; background-color: #f5f5f7; overflow: hidden; cursor: pointer; }
+        .diary-item img, .diary-item video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--easing); }
+        .diary-item:hover img, .diary-item:hover video { transform: scale(1.04); }
+        
+        .diary-item.size-tall { grid-row: span 2; } 
+        .diary-item.size-wide { grid-column: span 2; } 
+        .diary-item.size-big { grid-column: span 2; grid-row: span 2; } 
+
+        .diary-info {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+            color: #ffffff; opacity: 0;
+            transition: opacity 0.4s var(--easing);
+        }
+        .diary-item:hover .diary-info { opacity: 1; }
+        .diary-info h4 { font-size: 1rem; font-weight: 500; letter-spacing: 0.5px; }
+        .diary-info span { font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; letter-spacing: 1px; }
+
+        /* Module 4: About Section Hierarchy */
+        .about-layout { display: grid; grid-template-columns: 1fr; gap: 6rem; }
+        .about-intro { font-size: 1.5rem; font-weight: 300; max-width: 850px; line-height: 1.7; }
+        
+        .profile-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 4rem;
+        }
+        .profile-row { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; }
+        .profile-row h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted-color); font-weight: 600; padding-top: 0.3rem; }
+        .profile-data { display: flex; flex-direction: column; gap: 2rem; }
+        .data-block h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .data-block .sub { font-size: 0.9rem; color: var(--muted-color); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .data-block p { font-size: 1.05rem; color: var(--text-color); font-weight: 300; }
+        
+        .minimal-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+        .minimal-list li { font-size: 1.1rem; font-weight: 300; display: flex; justify-content: space-between; border-bottom: 1px dashed #f0f0f0; padding-bottom: 0.5rem; }
+        .minimal-list li span.year { color: var(--muted-color); font-size: 0.95rem; }
+
+        /* Footer */
+        footer h3 { font-size: 3rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 4rem; }
+        .contact-links a {
+            color: var(--text-color); text-decoration: none; font-weight: 500; font-size: 1.1rem; margin-right: 3rem;
+            border-bottom: 1px solid var(--text-color); padding-bottom: 4px; transition: all 0.4s var(--easing);
+        }
+        .contact-links a:hover { color: var(--accent-color); border-color: var(--accent-color); }
+
+        /* Animations */
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            body { padding: 4rem 1.5rem; }
+            nav { margin-bottom: 6rem; display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; }
+            .nav-right { width: 100%; justify-content: space-between; }
+            .nav-links a { margin-left: 0; margin-right: 1.5rem; }
+            .lang-switch { margin-left: 0; }
+            header { margin-bottom: 8rem; }
+            header h1 { font-size: 2.8rem; }
+            section { margin-bottom: 10rem; }
+            .project-list { gap: 6rem; }
+            .project-item h3 { font-size: 1.6rem; }
+            .diary-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); grid-auto-rows: 200px; }
+            .diary-item.size-tall, .diary-item.size-wide, .diary-item.size-big { grid-column: unset; grid-row: unset; }
+            .profile-row { grid-template-columns: 1fr; gap: 1rem; }
+            footer h3 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <nav>
+            <div class="logo">PORTFOLIO.</div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#commercial">
+                        <span lang="en">Commercial</span>
+                        <span lang="zh">商业项目</span>
+                    </a>
+                    <a href="#research">
+                        <span lang="en">Research</span>
+                        <span lang="zh">研究方向</span>
+                    </a>
+                    <a href="#creative">
+                        <span lang="en">Creative</span>
+                        <span lang="zh">日常设计</span>
+                    </a>
+                    <a href="#about">
+                        <span lang="en">About</span>
+                        <span lang="zh">关于我</span>
+                    </a>
+                </div>
+                <button class="lang-switch" onclick="toggleLanguage()">中文 / EN</button>
+            </div>
+        </nav>
+
+        <header>
+            <h1>
+                <span>Shaping Identity.</span><br>
+                <span>Amplifying Voice.</span><br>
+                <span>Driving Relevance.</span>
+            </h1>
+            <p lang="en">A structured archive of brand strategy execution, digital media research, and multidisciplinary visual storytelling.</p>
+            <p lang="zh">一个关于品牌策略执行、数字媒体研究以及多维视觉叙事的系统化作品档案馆。</p>
+        </header>
+
+        <section id="commercial">
+            <h2>
+                <span lang="en">Commercial Projects</span>
+                <span lang="zh">商业项目经历</span>
+            </h2>
+            <div class="project-list">
+                
+                <div class="project-item">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200" alt="Project 1">
+                    </div>
+                    <div class="project-meta">Project 01 / CIS & Strategy</div>
+                    <h3>
+                        <span lang="en">Corporate Identity System Overhaul for Tech Enterprise</span>
+                        <span lang="zh">某科技企业的企业形象识别系统（CIS）重塑</span>
+                    </h3>
+                    <div class="project-desc">
+                        <span lang="en">This case study demonstrates a complete re-architecting of a traditional enterprise's identity ecosystem. By auditing market dynamics and analyzing shifting consumer values, I redefined the core Mind Identity (MI) framework. This strategy was translated seamlessly into clear Behavioral and Visual guidelines, creating a unified brand narrative that successfully repositioned the corporation to resonate with modern demographics, ultimately driving engagement across digital touchpoints. (100-250 words summary here)</span>
+                        <span lang="zh">该项目展示了传统企业身份生态系统的完整重构过程。通过审计市场动态并分析不断变化的消费者价值观，我重新定义了其核心思想识别（MI）框架。这一策略被无缝转化为清晰的行为识别（BI）和视觉识别（VI）指南，创造了一个统一的品牌叙事，成功帮助该企业重新定位，引发年轻目标受众的共鸣，并最终显著提升了各数字触点的用户参与度。</span>
+                    </div>
+                </div>
+
+                </div>
+        </section>
+
+        <section id="research">
+            <h2>
+                <span lang="en">Research & Insights</span>
+                <span lang="zh">研究与学习方向</span>
+            </h2>
+            <div class="project-list">
+                
+                <div class="project-item">
+                    <div class="project-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1200" alt="Research 1">
+                    </div>
+                    <div class="project-meta">Research 01 / Media & Society</div>
+                    <h3>
+                        <span lang="en">The Platformization of Public Discourse & Elite Alliances</span>
+                        <span lang="zh">公共话语平台化与精英联盟研究</span>
+                    </h3>
+                    <div class="project-desc">
+                        <span lang="en">This academic paper explores the intricate relationship between political capital, elite alignment, and polarization on modern social platforms. Applying advanced sociological frameworks, the study unpacks how tactical collaborations appropriate communicative capital to reshape public sentiment. Through strict qualitative analysis, the research demystifies the mechanisms of algorithmic amplification and ideological echo chambers.</span>
+                        <span lang="zh">本篇学术论文探讨了现代社交媒体平台上政治资本、精英结盟与群体极化之间的复杂关系。研究引入了前沿的社会学理论框架，深刻剖析了策略性合作如何挪用传播资本来重塑公众情绪。通过严格的质化研究方法，本项工作揭示了算法放大机制与意识形态回音室的底层逻辑。</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="creative">
+            <h2>
+                <span lang="en">Creative Diary</span>
+                <span lang="zh">日常设计作品</span>
+            </h2>
+            
+            <ul class="diary-filter">
+                <li class="active">
+                    <span lang="en">All</span><span lang="zh">全部</span>
+                </li>
+                <li>
+                    <span lang="en">Illustration</span><span lang="zh">手绘插画</span>
+                </li>
+                <li>
+                    <span lang="en">Poster Design</span><span lang="zh">海报设计</span>
+                </li>
+                <li>
+                    <span lang="en">Video & Photo</span><span lang="zh">视频拍摄</span>
+                </li>
+            </ul>
+
+            <div class="diary-grid">
+                
+                <div class="diary-item">
+                    <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600" alt="Creative 1">
+                    <div class="diary-info">
+                        <h4>Digital Identity Sketch</h4>
+                        <span><span lang="en">Illustration</span><span lang="zh">手绘插画</span></span>
+                    </div>
+                </div>
+
+                <div class="diary-item size-tall">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600" alt="Creative 2">
+                    <div class="diary-info">
+                        <h4>Typography Poster No.1</h4>
+                        <span><span lang="en">Poster Design</span><span lang="zh">海报设计</span></span>
+                    </div>
+                </div>
+
+                <div class="diary-item size-wide">
+                    <video src="https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-41846-large.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+                    <div class="diary-info">
+                        <h4>Experimental Motion Narrative</h4>
+                        <span><span lang="en">Video Recording</span><span lang="zh">视频拍摄</span></span>
+                    </div>
+                </div>
+
+                </div>
+        </section>
+
+        <section id="about">
+            <h2>
+                <span lang="en">About & Profile</span>
+                <span lang="zh">关于个人</span>
+            </h2>
+            <div class="about-layout">
+                
+                <div class="about-intro">
+                    <span lang="en">A multi-disciplinary strategist and researcher operating at the intersection of digital media, brand philosophy, and corporate identity structures. Dedicated to transforming deep social insights into minimalist, high-impact communicative assets.</span>
+                    <span lang="zh">一位活跃于数字媒体、品牌哲学与企业形象识别系统（CIS）交叉领域的跨学科策略师与研究者。致力于将深度的社会学洞察转化为极简、高影响力的媒介沟通资产。</span>
+                </div>
+
+                <div class="profile-group">
+                    
+                    <div class="profile-row">
+                        <h3>
+                            <span lang="en">Experience</span><span lang="zh">工作经历</span>
+                        </h3>
+                        <div class="profile-data">
+                            <div class="data-block">
+                                <h4>Brand & Communications Consultant</h4>
+                                <div class="sub">Company Name / 2024 - Present</div>
+                                <p lang="en">Led corporate identity restructuring (CIS) and cross-border marketing initiatives. Developed comprehensive message architecture frameworks for diverse digital ecosystems.</p>
+                                <p lang="zh">主导企业识别系统（CIS）重塑和跨境营销倡议。为多样化的数字生态系统开发构建了全面的信息架构框架。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-row">
+                        <h3>
+                            <span lang="en">Education</span><span lang="zh">学习经历</span>
+                        </h3>
+                        <div class="profile-data">
+                            <div class="data-block">
+                                <h4>M.A. in Digital Media and Society</h4>
+                                <div class="sub">Uppsala University / Sweden</div>
+                                <p lang="en">Advanced study in platform sociology, qualitative methodologies, APA 7th standardization, and algorithmic structural impacts.</p>
+                                <p lang="zh">深入研究平台社会学、质化研究方法论、APA 7th规范及算法对社会结构的压迫与影响。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-row">
+                        <h3>
+                            <span lang="en">Achievements</span><span lang="zh">所获成果</span>
+                        </h3>
+                        <div class="profile-data">
+                            <ul class="minimal-list">
+                                <li>
+                                    <span>
+                                        <span lang="en">Advanced Statistical Evaluation: Passed with Distinction (VG)</span>
+                                        <span lang="zh">高级统计学课程评估：优秀 (VG)</span>
+                                    </span>
+                                    <span class="year">Academic</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="profile-row">
+                        <h3>
+                            <span lang="en">Awards</span><span lang="zh">奖项荣誉</span>
+                        </h3>
+                        <div class="profile-data">
+                            <ul class="minimal-list">
+                                <li>
+                                    <span>
+                                        <span lang="en">Excellent Creative Strategy Award</span>
+                                        <span lang="zh">杰出创意策略奖</span>
+                                    </span>
+                                    <span class="year">2025</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <footer id="contact">
+            <h2>Connect</h2>
+            <h3>Let’s build something enduring.</h3>
+            <div class="contact-links">
+                <a href="mailto:your.email@example.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="#">CV (PDF)</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            // 切换语言状态
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
+            
+            // 找到所有声明了 lang 属性的标签
+            const elementsEN = document.querySelectorAll('[lang="en"]');
+            const elementsZH = document.querySelectorAll('[lang="zh"]');
+            
+            if (currentLang === 'zh') {
+                // 隐藏英文，显示中文
+                elementsEN.forEach(el => el.style.display = 'none');
+                elementsZH.forEach(el => el.style.display = 'inline-block');
+                // 针对原本是块级元素的div或p进行修正，避免排版错乱
+                elementsZH.forEach(el => {
+                    if(el.tagName === 'P' || el.tagName === 'DIV') el.style.display = 'block';
+                });
+            } else {
+                // 隐藏中文，显示英文
+                elementsZH.forEach(el => el.style.display = 'none');
+                elementsEN.forEach(el => el.style.display = 'inline-block');
+                elementsEN.forEach(el => {
+                    if(el.tagName === 'P' || el.tagName === 'DIV') el.style.display = 'block';
+                });
+            }
+        }
+    </script>
+</body>
+</html>
